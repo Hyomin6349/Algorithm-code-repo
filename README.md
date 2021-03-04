@@ -1,12 +1,12 @@
 # 📝Algorithm-code-repo📝
 Algorithm study for coding test 
 
-## 💚Problems From💚
+## 💚Problems From
 - **Baekjoon**
 - **Epper**
 - **Programmers (코딩테스트 고득점 KIT)**
-
-## 🧡Algorithm Concept🧡
+- 
+## 🧡Algorithm Concept
 🔸 [정렬](https://validming99.tistory.com/46?category=958978)
 
 🔸 [스택/큐](https://validming99.tistory.com/50?category=958978)
