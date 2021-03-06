@@ -25,5 +25,7 @@ Algorithm study for coding test
 
 🔸 [그래프](https://validming99.tistory.com/86?category=958978)
 
-
+## 💜Java Study
+-  [Collection 자료구조](https://validming99.tistory.com/110)
+-  [형변환](https://validming99.tistory.com/111)
 
