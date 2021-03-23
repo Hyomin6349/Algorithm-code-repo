@@ -1,3 +1,6 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
 
 public class p1939_backtracking {
@@ -36,26 +39,32 @@ public class p1939_backtracking {
     static int end;
     static long answer=0;
 
-    public static void main(String[] args){
-        Scanner input = new Scanner(System.in);
+    private static int stoi(String s) {
+        return Integer.parseInt(s);
+    }
 
-        int n = input.nextInt();
-        int m = input.nextInt();
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+
+        int n = stoi(st.nextToken());
+        int m = stoi(st.nextToken());
 
         bridges = new ArrayList[n+1];
         for(int i=1; i<=n;i++) bridges[i] = new ArrayList<>();
 
         while(m-->0){
-            int s = input.nextInt();
-            int e = input.nextInt();
-            int w = input.nextInt();
-            input.nextLine();
+            st = new StringTokenizer(br.readLine());
+            int s = stoi(st.nextToken());
+            int e = stoi(st.nextToken());
+            int w = stoi(st.nextToken());
             bridges[s].add(new Bridge(e, w));
             bridges[e].add(new Bridge(s, w));
         }
 
-        int start = input.nextInt();
-        end = input.nextInt();
+        st = new StringTokenizer(br.readLine());
+        int start = stoi(st.nextToken());
+        end = stoi(st.nextToken());
         set.add(start);
         stack.push(1000000001);
         dfs(start);
