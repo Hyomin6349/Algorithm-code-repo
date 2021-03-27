@@ -24,7 +24,7 @@ public class sm2 {
         int h = Integer.parseInt(st.nextToken());
 
         ArrayList<Customer> customers = new ArrayList<>();
-        int computers[] = new int[p+1];
+        int computers[][] = new int[p+1][h+1];
 
         while(n-->0){
             st = new StringTokenizer(br.readLine());
@@ -35,19 +35,12 @@ public class sm2 {
 
         Collections.sort(customers);
 
-        for(int i=1; i<=p;i++){
-            int finish = 0;
-            for(int j=0;j<customers.size();j++){
-                Customer c = customers.get(j);
-                if(c.com == i && c.time+finish <= h){
-                    computers[i] += 1000*c.time;
-                    finish += c.time;
-                }
-            }
+        for(int i=1; i<=h;i++){
+
         }
 
         for(int i=1; i<=p;i++){
-            System.out.format("%d %d\n", i, computers[i]);
+            System.out.format("%d %d\n", i, computers[i][h]);
         }
     }
 }

@@ -9,9 +9,20 @@ public class sm1 {
         return -1;
     }
 
-    public static void dfs(){
+    public static void dfs(int node){
+        stack.push(skills[node]);
+        if(relation[node].size() == 0){
+            for(int i=0;i<stack.size();i++) System.out.print(stack.get(i)+" ");
+            System.out.println();
+        }
+        else{
+            for(int i=0;i<relation[node].size();i++) dfs(relation[node].get(i));
+        }
+        stack.pop();
     }
 
+    static Stack stack = new Stack();
+    static ArrayList<Integer> list = new ArrayList<>(); //root 찾기 위함
     static String[] skills;
     static ArrayList<Integer> relation[];
 
@@ -20,6 +31,8 @@ public class sm1 {
         String input = br.readLine();
 
         skills = input.split(" ");
+        for(int i=0;i<skills.length;i++) list.add(i);
+
         relation = new ArrayList[skills.length];
         int n = Integer.parseInt(br.readLine());
         for(int i=0;i<skills.length ;i++) relation[i] = new ArrayList<>();
@@ -28,9 +41,12 @@ public class sm1 {
             StringTokenizer st = new StringTokenizer(br.readLine());
             String p = st.nextToken();
             String l = st.nextToken();
-            relation[idx(l)].add(idx(p));
+            relation[idx(p)].add(idx(l));
+
+            if(list.contains(idx(l))) list.remove(Integer.valueOf(idx(l)));
         }
 
-        dfs();
+        for(int i=0;i<list.size();i++) dfs(list.get(i));
+
     }
 }
