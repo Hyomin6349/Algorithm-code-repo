@@ -28,7 +28,7 @@ public class p16234 {
         if(root==1) union.get(idx).add(new Country(r,c, A[r][c]));
         visit[r][c] = true;
 
-        if(r > 1 && open(A[r][c], A[r-1][c]) && !visit[r-1][c]){
+        if(r > 0 && open(A[r][c], A[r-1][c]) && !visit[r-1][c]){
             union.get(idx).add(new Country(r-1, c, A[r-1][c]));
             makeUnion(idx, r-1, c, 0);
         }
@@ -36,7 +36,7 @@ public class p16234 {
             union.get(idx).add(new Country(r+1, c, A[r+1][c]));
             makeUnion(idx, r+1, c, 0);
         }
-        if(c > 1 && open(A[r][c], A[r][c-1]) && !visit[r][c-1]){
+        if(c > 0 && open(A[r][c], A[r][c-1]) && !visit[r][c-1]){
             union.get(idx).add(new Country(r, c-1, A[r][c-1]));
             makeUnion(idx, r, c-1, 0);
         }
@@ -67,23 +67,11 @@ public class p16234 {
             for(Country country: union.get(i)){
                 sum += country.p;
             }
-            System.out.println(sum+" "+union.get(i).size());
-            int avg = sum/union.get(i).size();
+           int avg = sum/union.get(i).size();
             for(Country country: union.get(i)){
                 A[country.r][country.c] = avg;
             }
         }
-    }
-
-    public static void show(){
-        System.out.println("================");
-        for(int i=0;i<n;i++){
-            for(int j=0;j<n;j++){
-                System.out.print(A[i][j]+" ");
-            }
-            System.out.println();
-        }
-        System.out.println("================");
     }
 
     public static void main(String[] args){
@@ -106,10 +94,9 @@ public class p16234 {
         union.add(new ArrayList<>());
         makeUnion(0, 0, 0, 1);
         while(change){
-            change = false;
             move();
-            show();
             answer++;
+            change = false;
             union.clear();
             visit = new boolean[n][n];
             union.add(new ArrayList<>());
