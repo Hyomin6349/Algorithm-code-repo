@@ -1,19 +1,19 @@
 import java.util.*;
 
 public class p1517 {
-    static int[] sorted;
+    static long[] sorted,A;
     static int answer = 0;
 
-    public static void mergeSort(int[] A, int low, int high){
-        if(low<high){
+    public static void mergeSort(int low, int high){
+        if(low!=high){
             int mid = (low+high)/2;
-            mergeSort(A, low, mid);
-            mergeSort(A,mid+1, high);
-            merge(A, low, mid, high);
+            mergeSort( low, mid);
+            mergeSort(mid+1, high);
+            merge(low, mid, high);
         }
     }
 
-    public static void merge(int[] A, int low, int mid, int high){
+    public static void merge(int low, int mid, int high){
         int i = low;
         int j = mid +1;
         int idx = low;
@@ -30,11 +30,15 @@ public class p1517 {
         }
 
         //남은 배열 sorted에 넣기
-        while(i<=mid){
-            sorted[idx++] = A[i++];
+        if(i<mid){
+            while(i<=mid){
+                sorted[idx++] = A[i++];
+            }
         }
-        while(j<=high){
-            sorted[idx++] = A[j++];
+        else{
+            while(j<=high){
+                sorted[idx++] = A[j++];
+            }
         }
 
         //배열 교체
@@ -45,10 +49,10 @@ public class p1517 {
         Scanner input = new Scanner(System.in);
 
         int n = Integer.valueOf(input.nextLine());
-        int[] A = new int[n];
-        sorted = new int[n];
-        for(int i=0; i<n;i++) A[i] = input.nextInt();
-        mergeSort(A,0, n-1);
+        A = new long[n];
+        sorted = new long[n];
+        for(int i=0; i<n;i++) A[i] = input.nextLong();
+        mergeSort(0, n-1);
         System.out.println(answer);
     }
 }
