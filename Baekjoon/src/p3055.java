@@ -2,9 +2,21 @@ import java.util.*;
 
 public class p3055 {
 
-    static int row, column, move=0;
+    static int row, column, answer = 0;
     static char map[][];
-    static boolean finish = true;
+    static int[] dx = { -1, 0, 1, 0 };
+    static int[] dy = { 0, -1, 0, 1 };
+    static Queue<Point> water = new LinkedList<>();
+    static Queue<Point> hog = new LinkedList<>();
+
+    public static class Point{
+        int x;
+        int y;
+        public Point(int x, int y){
+            this.x = x;
+            this.y = y;
+        }
+    }
 
     public static void main(String[] args){
         Scanner input = new Scanner(System.in);
@@ -14,42 +26,70 @@ public class p3055 {
         input.nextLine();
 
         for(int i=0; i<row; i++){
-            String temp = input.nextLine();
-            map[i] = temp.toCharArray();
-        }
-
-        int hog_r=0, hog_c=0;
-        for(int i=0; i<row; i++){
-            for(int j=0;j<column;j++){
-                if(map[i][j] == 'S'){
-                    hog_r = i;
-                    hog_c = j;
-                }
+            char[] temp = input.nextLine().toCharArray();
+            for(int j=0;j<column; j++){
+                map[i][j] = temp[j];
+                if(temp[j] == '*') water.add(new Point(i,j));
+                if(temp[j] == 'S') hog.add(new Point(i,j));
             }
         }
 
-        solution(hog_r, hog_c);
-    }
-
-    public static void solution(int r, int c){
-        if(finish) return;
-        move++;
-        waterExpand();
-
+        while(true){
+            answer++;
+            if(hog.size() == 0){
+                System.out.println("KAKTUS");
+                return;
+            }
+            waterExpand();
+            if(hogMove()){
+                System.out.println(answer);
+                return;
+            }
+        }
     }
 
     public static void waterExpand(){
-        for(int i=0; i<row; i++){
-            for(int j=0; j<column; j++){
-                if(map[i][j] == '*'){
-                    if(i-1>=0 && map[i-1][j]=='.') map[i-1][j] = '*';
-                    if(i+1<row && map[i+1][j]=='.') map[i+1][j] = '*';
-                    if(j-1>=0 && map[i][j-1]=='.') map[i][j-1] = '*';
-                    if(j+1<column && map[i][j+1]=='.') map[i][j+1] = '*';
+        int size = water.size();
+
+        for(int i=0 ; i<size; i++){
+            Point p = water.poll();
+
+            for (int j = 0; j < 4; j++) {
+                int nx = dx[j] + p.x;
+                int ny = dy[j] + p.y;
+
+                if (0 <= nx && nx < row && 0 <= ny && ny < column) {
+                    if (map[nx][ny] == '.') {
+                        map[nx][ny] = '*';
+                        water.add(new Point(nx, ny));
+                    }
                 }
             }
         }
     }
 
+    public static boolean hogMove(){
+        int size = hog.size();
 
+        for(int i=0; i<size; i++){
+            Point p = hog.poll();
+
+            for (int j = 0; j < 4; j++) {
+                int nx = dx[j] + p.x;
+                int ny = dy[j] + p.y;
+
+                if (0 <= nx && nx < row && 0 <= ny && ny < column) {
+                    if (map[nx][ny] == 'D') {
+                        hog.add(new Point(nx, ny));
+                        return true;
+                    }
+                    if (map[nx][ny] == '.'){
+                        map[nx][ny] = 'S';
+                        hog.add(new Point(nx, ny));
+                    }
+                }
+            }
+        }
+        return false;
+    }
 }
