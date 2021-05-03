@@ -31,13 +31,13 @@ public class p9466 {
             int dst = i;
             list.add(dst);
             check[dst] = true;
-            while(!check[s[dst]] && !list.contains(s[dst])){
+            while(!check[s[dst]] && !list.contains(s[dst])){    //contains O(n)
                 list.add(s[dst]);
                 check[s[dst]] = true;
                 dst = s[dst];
             }
             if(list.contains(s[dst])) {
-                all -= list.size() - list.indexOf(s[dst]);
+                all -= list.size() - list.indexOf(s[dst]);  //indexOf O(n)
             }
             i++;
             list.clear();
