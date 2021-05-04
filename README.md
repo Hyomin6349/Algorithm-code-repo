@@ -1,6 +1,12 @@
 # 📝Algorithm-code-repo📝
 Algorithm study for coding test. 
 
+
+
+⚡ **COMMIT RULE** _(21.05.03~)_    **[feat] BOJ 'problem_number' 'problem_name'**
+
+
+
 ## 💚Problems From
 - **Baekjoon**
 - **Epper**
