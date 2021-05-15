@@ -2,34 +2,53 @@
 import java.util.*;
 
 public class graph1 {
-    static int solution(int n, int[][] edge) {
+    public static class Node{
+        int link;
+        int idx;
 
-        Set<Integer> list=new HashSet<>(); //가장 거리가 먼 간선이 아닌것;
-        Set<Integer> temp=new HashSet<>();
-        int left=n-1;	//남은 노드 수, 1제외
-        int count=0; 	// 새로 큐에 포함될 노드의 개수
+        public Node(int l, int i){
+            link = l;
+            idx=i;
+        }
+    }
+    public static int solution(int n, int[][] edge) {
+        int answer = 0;
+        int[] dis = new int[n+1];
+        boolean[] visited = new boolean[n+1];
+        ArrayList<Integer>[] graph = new ArrayList[n+1];
+        Queue<Node> q = new LinkedList<>();
 
-        list.add(1);
+        dis[1] = 0;
+        visited[1] = true;
+        for(int i=1;i<=n;i++) graph[i] = new ArrayList<>();
 
-        while(true) {
-            for(int i=0;i<edge.length;i++) {
-                if(!list.contains(edge[i][0])&& list.contains(edge[i][1])){
-                    temp.add(edge[i][0]);
-                }
-                if(!list.contains(edge[i][1])&& list.contains(edge[i][0])){
-                    temp.add(edge[i][1]);
-                }
-            }
-            //temp를 list에 추가
-            count=temp.size();
-            list.addAll(temp);
-            temp.clear();
-            left -= count;
-            if(left==0) {
-                return count;
+        for(int i=0;i<edge.length;i++){
+            graph[edge[i][0]].add(edge[i][1]);
+            graph[edge[i][1]].add(edge[i][0]);
+            if(edge[i][0] == 1) q.add(new Node(1, edge[i][1]));
+            if(edge[i][1] == 1) q.add(new Node(1, edge[i][0]));
+        }
+
+        while(!q.isEmpty()){
+            Node cur = q.poll();
+            if(visited[cur.idx]) continue;
+            visited[cur.idx] = true;
+            dis[cur.idx] = dis[cur.link]+1;
+            for(int i=0; i<graph[cur.idx].size();i++){
+                int next = graph[cur.idx].get(i);
+                if(!visited[next]) q.add(new Node(cur.idx, next));
             }
         }
 
+        int max = 0;
+        for(int i=1;i<=n;i++){
+            if(max < dis[i]) max = dis[i];
+        }
+        for(int i=1;i<=n;i++){
+            if(dis[i]==max) answer++;
+        }
+
+        return answer;
     }
     public static void main(String[] args) {
         // TODO Auto-generated method stub
