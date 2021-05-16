@@ -7,7 +7,7 @@ public class p1978 {
         boolean[] prime = new boolean[1001];
         prime[1] = true;
         for(int i=2;i<=500;i++){
-            int j = 2;
+            int j = i;
             while(j*i<=1000){
                 prime[i*j] = true;
                 j++;
