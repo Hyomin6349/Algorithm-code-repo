@@ -1,5 +1,5 @@
 # 📝Algorithm-code-repo📝
-Algorithm study for coding test. 
+Algorithm study for coding test
 
 
 
