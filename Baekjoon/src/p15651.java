@@ -13,11 +13,11 @@ public class p15651 {
         M = input.nextInt();
         selected = new int[M];
 
-        perm(1,0);
+        perm(0);
         System.out.println(sb);
     }
 
-    public static void perm(int start ,int select){
+    public static void perm(int select){
         if(select == M){
             for(int val : selected){
                 sb.append(val).append(' ');
@@ -25,9 +25,9 @@ public class p15651 {
             sb.append('\n');
             return;
         }
-        for(int i=start; i<=N; i++){
+        for(int i=1; i<=N; i++){
             selected[select] = i;
-            perm(start, select+1);
+            perm(select+1);
         }
     }
 }
