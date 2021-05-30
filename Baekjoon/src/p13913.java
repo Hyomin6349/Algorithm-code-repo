@@ -32,7 +32,7 @@ public class p13913 {
         q.add(subin);
         set.add(subin);
         from[subin] = -1;
-        stack.push(brother);
+        stack.push(brother);//도착지
 
         int ans = -1;
         while(true){
