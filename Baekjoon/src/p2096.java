@@ -2,41 +2,41 @@ import java.util.*;
 import java.io.*;
 
 public class p2096 {
-
-    static int N, max = 0, min = 900000;
-    static int[][] arr;
-
     public static void main(String[] args)throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        N = Integer.parseInt(br.readLine());
-        arr = new int[N][3];
+        int N = Integer.parseInt(br.readLine());
+        int[] maxDP = new int[3];
+        int[] minDP = new int[3];
         for(int i=0;i<N;i++){
             StringTokenizer st = new StringTokenizer(br.readLine());
-            for(int j=0;j<3;j++) arr[i][j] = Integer.parseInt(st.nextToken());
-        }
+            if(i==0){
+                maxDP[0] = Integer.parseInt(st.nextToken());
+                maxDP[1] = Integer.parseInt(st.nextToken());
+                maxDP[2] = Integer.parseInt(st.nextToken());
 
-        dfs(1, -1, 0);
-        System.out.println(max+" "+min);
-    }
+                minDP[0] = maxDP[0];
+                minDP[1] = maxDP[1];
+                minDP[2] = maxDP[2];
+            }
+            else{
+                int x0 = Integer.parseInt(st.nextToken());
+                int x1 = Integer.parseInt(st.nextToken());
+                int x2 = Integer.parseInt(st.nextToken());
 
-    public static void dfs(int row, int col, int sum){
-        if(col == N){
-            if(max < sum) max = sum;
-            if(min > sum) min = sum;
-            return;
-        }
+                int temp0 = maxDP[0], temp2 = maxDP[2];
+                maxDP[0] = Math.max(maxDP[0], maxDP[1]) + x0;
+                maxDP[2] = Math.max(maxDP[1], maxDP[2]) + x2;
+                maxDP[1] = Math.max(temp0, Math.max(maxDP[1], temp2)) + x1;
 
-        for(int i=-1; i<2;i++){
-            int next = row + i;
-            if(0<=next && next<3){
-                if(col==-1) dfs(next, col+1, sum);
-                else{
-                    sum += arr[col][next];
-                    dfs(next, col+1, sum);
-                    sum -= arr[col][next];
-                }
+                temp0 = minDP[0]; temp2 = minDP[2];
+                minDP[0] = Math.min(minDP[0], minDP[1]) + x0;
+                minDP[2] = Math.min(minDP[1], minDP[2]) + x2;
+                minDP[1] = Math.min(temp0, Math.min(minDP[1], temp2)) + x1;
             }
         }
+        int max = Math.max(maxDP[0], Math.max(maxDP[1], maxDP[2]));
+        int min =  Math.min(minDP[0], Math.min(minDP[1], minDP[2]));
+        System.out.println(max+" "+min);
     }
 }
