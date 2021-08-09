@@ -27,6 +27,7 @@ public class p12865 {
                 dp[j] = Math.max(dp[j], dp[j-W[i]]+V[i]);
             }
         }
+        
         System.out.println(dp[K]);
     }
 
