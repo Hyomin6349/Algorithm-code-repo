@@ -1,21 +1,7 @@
 import java.util.*;
 
-// 정확성 50, 효율성 38.3
+// 플로이드 와샬
 public class _2021_합승택시요금 {
-
-    static int[][] memo;
-    static ArrayList<Edge>[] fareList;
-    static int INF = 10000001;
-
-    public static class Edge implements Comparable<Edge>{
-        int dst, weight;
-        public Edge(int d, int w){
-            dst = d; weight = w;
-        }
-        public int compareTo(Edge o){
-            return weight-o.weight;
-        }
-    }
 
     public static void main(String[] args){
         int n = 6;
@@ -25,61 +11,34 @@ public class _2021_합승택시요금 {
     }
 
     public static int solution(int n, int s, int a, int b, int[][] fares) {
-        memo = new int[n+1][n+1]; //start -> end로의 최소 거리 담는
-        fareList = new ArrayList[n+1];
-        for(int i=1;i<=n;i++) fareList[i] = new ArrayList<>();
-
-        for(int i=0;i<fares.length; i++){
-            int start = fares[i][0];
-            int end = fares[i][1];
-            int weight = fares[i][2];
-
-            fareList[start].add(new Edge(end, weight));
-            fareList[end].add(new Edge(start, weight));
+        int INF = 10000001;
+        int memo[][] = new int[n+1][n+1];
+        for(int i=1;i<=n;i++) Arrays.fill(memo[i],INF);
+        for(int i=1;i<=n;i++){
+            memo[i][i] = 0;
+        }
+        for(int[] fare: fares){
+            memo[fare[0]][fare[1]] = fare[2];
+            memo[fare[1]][fare[0]] = fare[2];
         }
 
-        dij(s, -1, n); //start에서 모든 점으로 최소 거리
-        int min = memo[s][a] + memo[s][b]; //각자 따로 가는 경우
-        for(int i=1; i<=n ;i++){ //합승 지점
-            if(i==s || memo[s][i]==0 || memo[s][i] > min) continue;
-            int val = memo[s][i];
-            if(memo[i][a]==0) val += dij(i, a, n);
-            else val += memo[i][a];
-            if(memo[i][b]==0) val += dij(i, b, n);
-            else val += memo[i][b];
-            if(min>val) min = val;
-        }
 
-        return min;
-    }
 
-    public static int dij(int start, int end, int n){
-        PriorityQueue<Edge> pq = new PriorityQueue<>();
-        int[] dis = new int[n+1];
-        boolean[] visit = new boolean[n+1];
-        for(int i=1; i<=n; i++) dis[i] = INF;
-        pq.add(new Edge(start, 0));
-        dis[start] = 0;
-
-        while(!pq.isEmpty()){
-            Edge cur = pq.poll();
-            if(cur.dst==end) return cur.weight;
-            if(visit[cur.dst]) continue;
-            visit[cur.dst] = true;
-            dis[cur.dst] = cur.weight;
-            memo[start][cur.dst] = memo[cur.dst][start] = cur.weight;
-
-            for(int i=0; i<fareList[cur.dst].size(); i++){
-                Edge next = fareList[cur.dst].get(i);
-                if(!visit[next.dst] && dis[next.dst] > dis[cur.dst] + next.weight){
-                    dis[next.dst] = dis[cur.dst] + next.weight;
-                    pq.add(new Edge(next.dst, dis[next.dst]));
-
-                    memo[next.dst][cur.dst] = memo[cur.dst][next.dst] = dis[next.dst] - memo[start][cur.dst];
+        for(int k=1; k<=n;k++){
+            for(int i=1;i<n;i++){
+                for(int j=i+1;j<=n;j++){
+                    memo[i][j] = Math.min(memo[i][j], memo[i][k]+memo[k][j]);
+                    memo[j][i] = memo[i][j];
                 }
             }
         }
 
-        return INF;
+        int answer = INF;
+
+        for(int i=1;i<=n;i++){
+            answer = Math.min(answer, memo[s][i]+memo[i][a]+memo[i][b]);
+        }
+
+        return answer;
     }
 }
