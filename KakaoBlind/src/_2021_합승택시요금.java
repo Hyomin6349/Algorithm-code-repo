@@ -1,11 +1,11 @@
 import java.util.*;
 
-// 정확성 40, 효율성 26.7
+// 정확성 50, 효율성 38.3
 public class _2021_합승택시요금 {
 
     static int[][] memo;
     static ArrayList<Edge>[] fareList;
-    static int INF = 100001;
+    static int INF = 10000001;
 
     public static class Edge implements Comparable<Edge>{
         int dst, weight;
