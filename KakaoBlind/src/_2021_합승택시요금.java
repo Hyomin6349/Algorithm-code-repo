@@ -1,5 +1,6 @@
 import java.util.*;
 
+// 정확성 40, 효율성 26.7
 public class _2021_합승택시요금 {
 
     static int[][] memo;
