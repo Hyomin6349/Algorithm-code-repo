@@ -2,51 +2,42 @@ import java.io.*;
 import java.util.*;
 
 public class p11062 {
-
+    static int[][][] dp;
     static int[] arr;
-    static int[][] memo;
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws Exception{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringBuilder sb = new StringBuilder();
         int T = Integer.parseInt(br.readLine());
 
-        while(T-->0){
+        for(int i=0; i<T; i++) {
             int N = Integer.parseInt(br.readLine());
-            StringTokenizer st = new StringTokenizer(br.readLine());
             arr = new int[N];
-            memo = new int[N+1][N+1];
-            for(int i=0;i<N;i++) arr[i] = Integer.parseInt(st.nextToken());
+            String[] input = br.readLine().split(" ");
 
-            sb.append(play(0, N)).append('\n');
+            for(int j=0; j<N; j++)
+                arr[j] = Integer.parseInt(input[j]);
+
+            dp = new int[2][N][N];
+
+            int max = dfs(0, N-1, 1);
+
+            System.out.println(max);
         }
-
-        System.out.println(sb);
     }
 
-    public static int play(int start, int end){
-        if(memo[start][end]!=0) return memo[start][end];
+    public static int dfs(int left, int right, int turn) {
+        if(left>right) return 0;
 
-        if(start>end) return 0;
-        if(start==end) return arr[start];
-        if(end-start==1) return arr[start];
-        if(end-start==2) {
-            memo[start][end] = Math.max(arr[start], arr[start+1]);
-            return memo[start][end];
-        }
+        int res = dp[turn][left][right];
 
+        if(res!=0) return res;
 
-        //case 1
-        int a1 = arr[start];
-        if(arr[start+1]<arr[end-1]) a1 += play(start+1, end-1);
-        else a1 += play(start+2, end);
-        //case 2
-        int a2 = arr[end-1];
-        if(arr[start] < arr[end-2]) a2 += play(start, end-2);
-        else a2 += play(start+1, end-1);
+        if(turn==1)
+            res = Math.max(dfs(left+1, right, 0)+arr[left], dfs(left, right-1, 0)+arr[right]);
 
+        else
+            res = Math.min(dfs(left+1, right, 1), dfs(left, right-1, 1));
 
-        memo[start][end] = Math.max(a1, a2);
-        return  memo[start][end];
+        return dp[turn][left][right] = res;
     }
 }
