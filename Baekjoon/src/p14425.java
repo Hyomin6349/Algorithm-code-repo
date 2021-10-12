@@ -4,9 +4,11 @@ import java.io.*;
 public class p14425 {
 
     public static class Trie{
+        int length;
         Trie[] child;
 
-        public Trie(){
+        public Trie(int length){
+            this.length = length;
             child = new Trie[26];
         }
 
@@ -17,7 +19,7 @@ public class p14425 {
                     cur = cur.child[c-'a'];
                     continue next;
                 } else {
-                    cur.child[c-'a'] = new Trie();
+                    cur.child[c-'a'] = new Trie(0);
                     cur = cur.child[c-'a'];
                 }
             }
@@ -30,9 +32,6 @@ public class p14425 {
 
                 cur = cur.child[c-'a'];
                 continue next;
-            }
-            for(int i=0;i<26;i++){
-                if(cur.child[i] != null) return 0;
             }
             return 1;
         }
@@ -47,8 +46,9 @@ public class p14425 {
         Trie[] root = new Trie[N];
 
         for(int i=0;i<N;i++){
-            root[i] = new Trie();
-            root[i].insert(br.readLine().toCharArray());
+            char[] word = br.readLine().toCharArray();
+            root[i] = new Trie(word.length);
+            root[i].insert(word);
         }
 
         int cnt = 0;
@@ -56,10 +56,12 @@ public class p14425 {
             char[] word = br.readLine().toCharArray();
 
             for(int j=0;j<N;j++){
-                int res = root[j].find(word);
-                if(res == 1){
-                    cnt++;
-                    break;
+                if(word.length == root[j].length) {
+                    int res = root[j].find(word);
+                    if (res == 1) {
+                        cnt++;
+                        break;
+                    }
                 }
             }
         }
