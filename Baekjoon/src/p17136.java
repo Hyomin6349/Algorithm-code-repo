@@ -30,12 +30,12 @@ public class p17136 {
         else{
             for(int i=5; i>0;i--){
                 if(isPossible(r, c, i) && cnt[i]+1 <= 5) {
-                    make(r, c, i);
+                    make(r, c, i, 0);
                     cnt[i]++;
                     solve(idx+1, cnt);
 
                     cnt[i]--;
-                    back(r, c, i);
+                    make(r, c, i, 1);
                 }
             }
         }
@@ -52,19 +52,10 @@ public class p17136 {
         return true;
     }
 
-    public static void make(int r, int c, int size){
+    public static void make(int r, int c, int size, int state){
         for(int i=0;i<size;i++){
             for(int j=0;j<size;j++){
-                map[r+i][c+j] = 0;
-            }
-        }
-        map[r][c] = size;
-    }
-
-    public static void back(int r, int c, int size){
-        for(int i=0;i<size;i++){
-            for(int j=0;j<size;j++){
-                map[r+i][c+j] = 1;
+                map[r+i][c+j] = state;
             }
         }
     }
