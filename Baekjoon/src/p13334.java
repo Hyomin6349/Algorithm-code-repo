@@ -2,60 +2,43 @@ import java.util.*;
 import java.io.*;
 
 public class p13334 {
-    public static class Group{
-        int cnt, left, right;
-        public Group(int c, int l, int r){
-            cnt = c; left = l; right = r;
+    public static class Info implements Comparable<Info>{
+        int left, right;
+        public Info(int l, int r){
+            left = l; right = r;
+        }
+        public int compareTo(Info o){
+            if(right==o.right) return left-o.left;
+            else return right-o.right;
         }
     }
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int N = Integer.parseInt(br.readLine());
-        int[][] info = new int[N][2];
+        ArrayList<Info> list = new ArrayList<>();
 
         for(int i=0;i<N;i++){
             StringTokenizer st = new StringTokenizer(br.readLine());
             int a = Integer.parseInt(st.nextToken());
             int b = Integer.parseInt(st.nextToken());
-            info[i][0] = Math.min(a,b);
-            info[i][1] = Math.max(a,b);
+            list.add(new Info(Math.min(a,b), Math.max(a,b)));
         }
 
         int d = Integer.parseInt(br.readLine());
-        ArrayList<Group> list = new ArrayList<>();
-        for(int i=0;i<N;i++){
-            if(info[i][1]-info[i][0]>d) continue;
-            boolean find = false;
-            for(int j=0;j<list.size();j++){
-                Group group = list.get(j);
-                if(group.left<=info[i][0] && info[i][1]<=group.right){
-                    group.cnt++;
-                    find = true;
-                }
-                if(group.left<=info[i][0] && group.right < info[i][1] && info[i][1]-group.left<=d){
-                    group.right = info[i][1];
-                    group.cnt++;
-                    find = true;
-                }
-                if(info[i][0]<group.left && info[i][1]<=group.right && group.right-info[i][0]<=d){
-                    group.left = info[i][0];
-                    group.cnt++;
-                    find = true;
-                }
-                if(info[i][0]<group.left && group.right<info[i][0]){
-                    group.left = info[i][0];
-                    group.right = info[i][1];
-                    group.cnt++;
-                    find = true;
-                }
-            }
-            if(!find) list.add(new Group(1, info[i][0], info[i][1]));
-        }
-
+        Collections.sort(list);
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
         int answer = 0;
-        for(int i=0;i<list.size();i++){
-            answer = Math.max(answer, list.get(i).cnt);
+        for(int i=0;i<N;i++){
+            Info info = list.get(i);
+            if(info.right - info.left>d) continue;
+
+            pq.add(info.left);
+            while(!pq.isEmpty()){
+                if(info.right-pq.peek()<=d) break;
+                pq.poll();
+            }
+            answer = Math.max(answer, pq.size());
         }
 
         System.out.println(answer);
