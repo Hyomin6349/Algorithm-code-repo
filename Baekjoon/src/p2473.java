@@ -19,19 +19,15 @@ public class p2473 {
             int right = N-1;
 
             while(left<right){
-                if(arr[left]==ch) left++;
-                else if(arr[right]==ch) right--;
-                else{
-                    long val = arr[left] + arr[right] + ch;
-                    if(Math.abs(val) < abs){
-                        abs = Math.abs(val);
-                        ans[0] = ch;
-                        ans[1] = arr[left];
-                        ans[2] = arr[right];
-                    }
-                    if(val > 0) right--;
-                    else if(val<=0) left++;
+                long val = arr[left] + arr[right] + ch;
+                if(Math.abs(val) < abs){
+                    abs = Math.abs(val);
+                    ans[0] = ch;
+                    ans[1] = arr[left];
+                    ans[2] = arr[right];
                 }
+                if(val > 0) right--;
+                else if(val<=0) left++;
             }
         }
 
