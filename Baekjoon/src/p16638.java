@@ -28,7 +28,6 @@ public class p16638 {
             return;
         }
 
-
         //선택 안한 경우
         StringBuilder tmp1 = new StringBuilder(str);
         tmp1.append(exp[2*n]).append(exp[2*n+1]);
