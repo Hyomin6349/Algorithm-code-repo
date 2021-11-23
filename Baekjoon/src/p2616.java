@@ -16,13 +16,13 @@ public class p2616 {
 
         for(int i=K;i<=N;i++){
             int val = sum[i] - sum[i-K];
-            if(i<K*2){
-                dp[i][1] = Math.max(dp[i-1][1], val); //k~2k
-            } else if(i<K*3){
-                dp[i][2] = Math.max(dp[i-1][2], dp[i-K][1] + val); //k~2k
-            } else {
+            if(i>=K*3){
                 dp[i][3] = Math.max(dp[i-1][3], dp[i-K][2] + val);
             }
+            if(i>=K*2){
+                dp[i][2] = Math.max(dp[i-1][2], dp[i-K][1] + val);
+            }
+            dp[i][1] = Math.max(dp[i-1][1], val);
         }
 
         System.out.println(dp[N][3]);
